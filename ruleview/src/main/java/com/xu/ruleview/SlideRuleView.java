@@ -11,8 +11,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 
+import java.util.ArrayList;
+
 public class SlideRuleView extends View {
-    private static final int rule5Length =60;//刻度线为5倍时的长度
+    private static final int rule5Length = 60;//刻度线为5倍时的长度
     private static final int ruleOtherLength = 33;//其它刻度线的长度
     private static final int rule10Length = 100;//可都是10倍时的长度
     private Paint paint;
@@ -85,19 +87,19 @@ public class SlideRuleView extends View {
         int interval = 0;//第二个与第一个之间的每个刻度的X轴的坐标
 
         int i2 = (threePost - twoPost) / 5;//第三个与第二个
-        int interval2 = twoPost+i2;
+        int interval2 = twoPost + i2;
 
         int i3 = (fourPost - threePost) / 5;//第四个与第三个
-        int interval3 = threePost+i3;
+        int interval3 = threePost + i3;
 
         int i4 = (fivePost - fourPost) / 5;//第五个与第四个
-        int interval4 = fourPost+i4;
+        int interval4 = fourPost + i4;
 
         int i5 = (sixPost - fivePost) / 5;//第六个与第五个
-        int interval5 = fivePost+i5;
+        int interval5 = fivePost + i5;
 
         int i6 = (sevenPost - sixPost) / 5;//第七个与第六个
-        int interval6 = sixPost+i6;
+        int interval6 = sixPost + i6;
         for (int j = 0; j <= 30; j++) {
 
             if (j >= 0 && j <= 5) {
@@ -127,19 +129,19 @@ public class SlideRuleView extends View {
         int rule5mode = j % 5;
         int rule10mode = j % 10;
         int i = j / 10;
-        if (rule5mode == 0 && j != 0&&rule10mode!=0) {
+        if (rule5mode == 0 && j != 0 && rule10mode != 0) {
             //5倍刻度线
             canvas.drawLine(interval, 0, interval, rule5Length, paint);
-        } else if (j == 0 || rule10mode == 0&&rule5mode==0) {
+        } else if (j == 0 || rule10mode == 0 && rule5mode == 0) {
             if (j == 0) {
                 //10倍刻度线
                 canvas.drawLine(0, 0, 0, rule10Length, paint);
                 textPaint.setTextAlign(Paint.Align.LEFT);
-                canvas.drawText("0 mm",0,rule10Length+25,textPaint);
+                canvas.drawText("0 mm", 0, rule10Length + 25, textPaint);
                 textPaint.setTextAlign(Paint.Align.CENTER);
             } else {
                 canvas.drawLine(interval, 0, interval, rule10Length, paint);
-                canvas.drawText(i+"",interval,rule10Length+25,textPaint);
+                canvas.drawText(i + "", interval, rule10Length + 25, textPaint);
             }
         } else if (rule5mode != 0 && rule10mode != 0 && j != 0) {
             //其它刻度线
@@ -151,7 +153,7 @@ public class SlideRuleView extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        switch (event.getAction()){
+        switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 xDown = (int) event.getX();
                 i = xDown / length;
@@ -160,42 +162,112 @@ public class SlideRuleView extends View {
                 break;
             case MotionEvent.ACTION_MOVE:
                 int x = (int) event.getX();
-                int value = (x-xDown)/20;
+                int value = (x - xDown) / 20;
 
-                if (i==0){
-                    if(i1>length/2){
-                        twoPost=twoPost+value;
+                if (i == 0) {
+                    if (i1 > length / 2) {
+                        if (twoPost + value >= threePost) {
+                            twoPost = threePost;
+                        } else if (twoPost + value <= 0) {
+                            twoPost = 0;
+                        } else {
+                            twoPost = twoPost + value;
+                        }
+
                     }
 
-                }else if (i==1){
-                    if(i1>length/2){
-                        threePost = threePost+value;
-                    }else{
-                        twoPost=twoPost+value;
+                } else if (i == 1) {
+                    if (i1 > length / 2) {
+
+                        if (threePost + value >= fourPost) {
+                            threePost = fourPost;
+                        } else if (threePost + value <= twoPost) {
+                            threePost = twoPost;
+                        } else {
+                            threePost = threePost + value;
+                        }
+                    } else {
+                        if (twoPost + value >= threePost) {
+                            twoPost = threePost;
+                        } else if (twoPost + value <= 0) {
+                            twoPost = 0;
+                        } else {
+                            twoPost = twoPost + value;
+                        }
                     }
-                }else if (i==2){
-                    if(i1>length/2){
-                        fourPost = fourPost+value;
-                    }else{
-                        threePost = threePost+value;
+                } else if (i == 2) {
+                    if (i1 > length / 2) {
+
+                        if (fourPost + value >= fivePost) {
+                            fourPost = fivePost;
+                        } else if (fourPost + value <= threePost) {
+                            fourPost = threePost;
+                        } else {
+                            fourPost = fourPost + value;
+                        }
+                    } else {
+                        if (threePost + value >= fourPost) {
+                            threePost = fourPost;
+                        } else if (threePost + value <= twoPost) {
+                            threePost = twoPost;
+                        } else {
+                            threePost = threePost + value;
+                        }
                     }
-                }else if (i==3){
-                    if(i1>length/2){
-                        fivePost = fivePost+value;
-                    }else{
-                        fourPost = fourPost+value;
+                } else if (i == 3) {
+                    if (i1 > length / 2) {
+                        if (fivePost + value >= sixPost) {
+                            fivePost = sixPost;
+                        } else if (fivePost + value <= fourPost) {
+                            fivePost = fourPost;
+                        } else {
+                            fivePost = fivePost + value;
+                        }
+                    } else {
+                        if (fourPost + value >= fivePost) {
+                            fourPost = fivePost;
+                        } else if (fourPost + value <= threePost) {
+                            fourPost = threePost;
+                        } else {
+                            fourPost = fourPost + value;
+                        }
                     }
-                }else if (i==4){
-                    if(i1>length/2){
-                        sixPost = sixPost+value;
-                    }else{
-                        fivePost = fivePost+value;
+                } else if (i == 4) {
+                    if (i1 > length / 2) {
+                        if (sixPost + value >= sevenPost) {
+                            sixPost = sevenPost;
+                        } else if (sixPost + value <= fivePost) {
+                            sixPost = fivePost;
+                        } else {
+                            sixPost = sixPost + value;
+                        }
+                    } else {
+                        if (fivePost + value >= sixPost) {
+                            fivePost = sixPost;
+                        } else if (fivePost + value <= fourPost) {
+                            fivePost = fourPost;
+                        } else {
+                            fivePost = fivePost + value;
+                        }
                     }
-                }else if (i==5){
-                    if(i1>length/2){
-                        sevenPost = sevenPost+value;
-                    }else{
-                        sixPost = sixPost+value;
+                } else if (i == 5) {
+                    if (i1 > length / 2) {
+                        sevenPost = sevenPost + value;
+                        if (sevenPost + value >= ruleLength) {
+                            sevenPost = ruleLength;
+                        } else if (sevenPost + value <= sixPost) {
+                            sevenPost = sixPost;
+                        } else {
+                            sevenPost = sevenPost + value;
+                        }
+                    } else {
+                        if (sixPost + value >= sevenPost) {
+                            sixPost = sevenPost;
+                        } else if (sixPost + value <= fivePost) {
+                            sixPost = fivePost;
+                        } else {
+                            sixPost = sixPost + value;
+                        }
                     }
                 }
                 invalidate();
@@ -207,10 +279,26 @@ public class SlideRuleView extends View {
         return true;
     }
 
-    public void setAllPost(){
-
+    public void setAllPost(int one, int two, int three, int four, int five, int six, int seven) {
+        onePost = one;
+        twoPost = two;
+        threePost = three;
+        fourPost = four;
+        fivePost = five;
+        sixPost = six;
+        sevenPost = seven;
+        invalidate();
     }
-    public void getAallPost(){
 
+    public ArrayList getAallPost() {
+        ArrayList arrayList = new ArrayList();
+        arrayList.add(0, onePost);
+        arrayList.add(1, twoPost);
+        arrayList.add(2, threePost);
+        arrayList.add(3, fourPost);
+        arrayList.add(4, fivePost);
+        arrayList.add(5, sixPost);
+        arrayList.add(6, sevenPost);
+        return arrayList;
     }
 }
