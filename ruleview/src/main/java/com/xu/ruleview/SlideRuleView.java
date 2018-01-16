@@ -301,4 +301,28 @@ public class SlideRuleView extends View {
         arrayList.add(6, sevenPost);
         return arrayList;
     }
+
+    /**
+     *
+     * @param post 代表需要设置的刻度位置
+     * @param value 每次设置刻度的value值,建议设置+ - 1微调
+     */
+    public void setPost(int post,int value){
+        if(post==0){
+            onePost=onePost+value;
+        }else if(post==1){
+            twoPost=threePost+value;
+        }else if(post==2){
+            threePost=threePost+value;
+        }else if(post==3){
+            fourPost=fourPost+value;
+        }else if(post==4){
+            fivePost=fivePost+value;
+        }else if(post==5){
+            sixPost=sixPost+value;
+        }else if(post==6){
+            sevenPost=sevenPost+value;
+        }
+        invalidate();
+    }
 }
