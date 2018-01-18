@@ -133,7 +133,7 @@ public class SlideRuleView extends View {
             canvas.drawLine(interval, 0, interval, rule5Length, paint);
         } else if (j == 0 || rule10mode == 0 && rule5mode == 0) {
             if (j == 0) {
-                //10倍刻度线
+                //10倍刻度线 先注释
                 //canvas.drawLine(0, 0, 0, rule10Length, paint);
                 canvas.drawLine(interval, 0, interval, rule10Length, paint);
                 textPaint.setTextAlign(Paint.Align.LEFT);
