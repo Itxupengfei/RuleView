@@ -304,7 +304,7 @@ public class SlideRuleView extends View {
 
     /**
      *
-     * @param post 代表需要设置的刻度位置
+     * @param post 代表需要设置的刻度位置x
      * @param value 每次设置刻度的value值,建议设置+ - 1微调
      */
     public void setPost(int post,int value){
