@@ -85,7 +85,6 @@ public class SlideRuleView extends View {
         //5倍刻度线,不同刻度线长度不一样
         int i1 = (twoPost - onePost) / 5;//这是刻度之间的平均间隔
         int interval = 0;//第二个与第一个之间的每个刻度的X轴的坐标
-
         int i2 = (threePost - twoPost) / 5;//第三个与第二个
         int interval2 = twoPost + i2;
 
@@ -135,7 +134,8 @@ public class SlideRuleView extends View {
         } else if (j == 0 || rule10mode == 0 && rule5mode == 0) {
             if (j == 0) {
                 //10倍刻度线
-                canvas.drawLine(0, 0, 0, rule10Length, paint);
+                //canvas.drawLine(0, 0, 0, rule10Length, paint);
+                canvas.drawLine(interval, 0, interval, rule10Length, paint);
                 textPaint.setTextAlign(Paint.Align.LEFT);
                 canvas.drawText("0 mm", 0, rule10Length + 25, textPaint);
                 textPaint.setTextAlign(Paint.Align.CENTER);
