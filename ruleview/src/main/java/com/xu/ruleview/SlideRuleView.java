@@ -135,7 +135,7 @@ public class SlideRuleView extends View {
             if (j == 0) {
                 //10倍刻度线 先注释
                 //canvas.drawLine(0, 0, 0, rule10Length, paint);
-                canvas.drawLine(interval, 0, interval, rule10Length, paint);
+                canvas.drawLine(onePost, 0, onePost, rule10Length, paint);
                 textPaint.setTextAlign(Paint.Align.LEFT);
                 canvas.drawText("0 mm", 0, rule10Length + 25, textPaint);
                 textPaint.setTextAlign(Paint.Align.CENTER);
