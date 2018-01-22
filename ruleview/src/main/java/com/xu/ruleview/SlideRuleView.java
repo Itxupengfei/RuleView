@@ -34,7 +34,8 @@ public class SlideRuleView extends View {
     private int xDown;
     private int i;
     private int i1;
-
+    private ArrayList arrayList;
+    Paint currentPaint;
     public SlideRuleView(Context context) {
         this(context, null);
     }
@@ -49,7 +50,6 @@ public class SlideRuleView extends View {
                 .getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics outMetrics = new DisplayMetrics();
         wm.getDefaultDisplay().getMetrics(outMetrics);
-
         int widthPixels = outMetrics.widthPixels;
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
@@ -66,6 +66,9 @@ public class SlideRuleView extends View {
         paint.setStrokeWidth(5);
         textPaint.setTextSize(mTextSize);
         textPaint.setTextAlign(Paint.Align.CENTER);
+        currentPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        currentPaint.setColor(Color.YELLOW);
+        currentPaint.setStrokeWidth(5);
     }
 
   /*  @Override
@@ -117,31 +120,52 @@ public class SlideRuleView extends View {
 
             } else if (j >= 26 && j <= 30) {
                 interval6 = DrawLine(canvas, i6, interval6, j);
-
             }
-
         }
-
     }
+
+
 
     private int DrawLine(Canvas canvas, int i1, int interval, int j) {
         int rule5mode = j % 5;
         int rule10mode = j % 10;
         int i = j / 10;
         if (rule5mode == 0 && j != 0 && rule10mode != 0) {
-            //5倍刻度线
-            canvas.drawLine(interval, 0, interval, rule5Length, paint);
+            if (currentPost==1||currentPost==3||currentPost==5){
+                //5倍刻度线
+                canvas.drawLine(interval, 0, interval, rule5Length, currentPaint);
+            }else{
+                //5倍刻度线
+                canvas.drawLine(interval, 0, interval, rule5Length, paint);
+            }
+
         } else if (j == 0 || rule10mode == 0 && rule5mode == 0) {
             if (j == 0) {
-                //10倍刻度线 先注释
-                //canvas.drawLine(0, 0, 0, rule10Length, paint);
-                canvas.drawLine(onePost, 0, onePost, rule10Length, paint);
-                textPaint.setTextAlign(Paint.Align.LEFT);
-                canvas.drawText("0 mm", 0, rule10Length + 25, textPaint);
-                textPaint.setTextAlign(Paint.Align.CENTER);
+                if (currentPost==0){
+                    //10倍刻度线 先注释
+                    //canvas.drawLine(0, 0, 0, rule10Length, paint);
+                    canvas.drawLine(onePost, 0, onePost, rule10Length, currentPaint);
+                    textPaint.setTextAlign(Paint.Align.LEFT);
+                    canvas.drawText("0 mm", 0, rule10Length + 25, textPaint);
+                    textPaint.setTextAlign(Paint.Align.CENTER);
+                }else{
+                    //10倍刻度线 先注释
+                    //canvas.drawLine(0, 0, 0, rule10Length, paint);
+                    canvas.drawLine(onePost, 0, onePost, rule10Length, paint);
+                    textPaint.setTextAlign(Paint.Align.LEFT);
+                    canvas.drawText("0 mm", 0, rule10Length + 25, textPaint);
+                    textPaint.setTextAlign(Paint.Align.CENTER);
+                }
+
             } else {
-                canvas.drawLine(interval, 0, interval, rule10Length, paint);
-                canvas.drawText(i + "", interval, rule10Length + 25, textPaint);
+                if (currentPost==2||currentPost==4||currentPost==6){
+                    canvas.drawLine(interval, 0, interval, rule10Length, currentPaint);
+                    canvas.drawText(i + "", interval, rule10Length + 25, textPaint);
+                }else{
+                    canvas.drawLine(interval, 0, interval, rule10Length, paint);
+                    canvas.drawText(i + "", interval, rule10Length + 25, textPaint);
+                }
+
             }
         } else if (rule5mode != 0 && rule10mode != 0 && j != 0) {
             //其它刻度线
@@ -302,27 +326,28 @@ public class SlideRuleView extends View {
         return arrayList;
     }
 
+    int currentPost=0;
     /**
-     *
-     * @param post 代表需要设置的刻度位置x
+     * @param post  代表需要设置的刻度位置x
      * @param value 每次设置刻度的value值,建议设置+ - 1微调
      */
-    public void setPost(int post,int value){
-        if(post==0){
-            onePost=onePost+value;
-        }else if(post==1){
-            twoPost=threePost+value;
-        }else if(post==2){
-            threePost=threePost+value;
-        }else if(post==3){
-            fourPost=fourPost+value;
-        }else if(post==4){
-            fivePost=fivePost+value;
-        }else if(post==5){
-            sixPost=sixPost+value;
-        }else if(post==6){
-            sevenPost=sevenPost+value;
+    public void setPost(int post, int value) {
+        if (post == 0) {
+            onePost = onePost + value;
+        } else if (post == 1) {
+            twoPost = threePost + value;
+        } else if (post == 2) {
+            threePost = threePost + value;
+        } else if (post == 3) {
+            fourPost = fourPost + value;
+        } else if (post == 4) {
+            fivePost = fivePost + value;
+        } else if (post == 5) {
+            sixPost = sixPost + value;
+        } else if (post == 6) {
+            sevenPost = sevenPost + value;
         }
+        currentPost=post;
         invalidate();
     }
 }
