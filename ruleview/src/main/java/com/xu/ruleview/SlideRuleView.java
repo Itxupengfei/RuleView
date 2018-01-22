@@ -131,7 +131,13 @@ public class SlideRuleView extends View {
         int rule10mode = j % 10;
         int i = j / 10;
         if (rule5mode == 0 && j != 0 && rule10mode != 0) {
-            if (currentPost==1||currentPost==3||currentPost==5){
+            if (currentPost==1){
+                //5倍刻度线
+                canvas.drawLine(interval, 0, interval, rule5Length, currentPaint);
+            }else if (currentPost==3){
+                //5倍刻度线
+                canvas.drawLine(interval, 0, interval, rule5Length, currentPaint);
+            }else if (currentPost==5){
                 //5倍刻度线
                 canvas.drawLine(interval, 0, interval, rule5Length, currentPaint);
             }else{
@@ -158,7 +164,13 @@ public class SlideRuleView extends View {
                 }
 
             } else {
-                if (currentPost==2||currentPost==4||currentPost==6){
+                if (currentPost==2){
+                    canvas.drawLine(interval, 0, interval, rule10Length, currentPaint);
+                    canvas.drawText(i + "", interval, rule10Length + 25, textPaint);
+                }else if(currentPost==4){
+                    canvas.drawLine(interval, 0, interval, rule10Length, currentPaint);
+                    canvas.drawText(i + "", interval, rule10Length + 25, textPaint);
+                }else if(currentPost==6){
                     canvas.drawLine(interval, 0, interval, rule10Length, currentPaint);
                     canvas.drawText(i + "", interval, rule10Length + 25, textPaint);
                 }else{
